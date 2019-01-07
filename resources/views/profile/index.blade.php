@@ -23,8 +23,10 @@
 <label for="email" class="col-md-4 control-label"><strong>E-mail:{{ $user->email }}</strong></label>
  </div>
 
+<hr>
 
  <br><a href="{{ url('/update') }}">Update</a></br>    
+ <br><a href="{{ url('/mythreads') }}">MyThreads</a></br> 
 
 
 @endsection

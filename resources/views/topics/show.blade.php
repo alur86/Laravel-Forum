@@ -15,9 +15,25 @@
 <br><br><br>
 <div class="row text-center">  
 @if (count($count_results) > 0)
+ 
+@if (Auth::guest())
+<h3>You must registered that to see threads and replies</h3>
+             
+@else
+
+@foreach ($topic_threads as $thread)
+<h3>Thread Title:</h3>
+ <div class="col-md-6">
+<h3>Thread Title:{{$thread->title}}</h3>
+ </div>
+<a href="{{ URL::to('thread_show/'.$thread->id) }}">Read it...</a>
+</div>
+@endforeach
+</div>
 <h3 class="section-title">Search</h3>
 <div class="form-group">    
-<form class="typeahead" role="search" method="GET" action= "{{ url('/search') }}">
+<form class="typeahead" role="search" method="GET" action= "{{ url('/topic_search') }}">
+ {{ csrf_field() }}
 <input id="topic_id" name="topic_id"  type="hidden" value="{{$topic->id}}">
 <div class="form-group">
 @if ($errors->has('query'))
@@ -34,18 +50,10 @@
 </div>
 </form>
 <br>
-<br> 
-@foreach ($topic_threads as $thread)
-<label for="name" class="col-md-4 control-label">Title</label>
- <div class="col-md-6">
-<h3>Thread Title:{{$thread->title}}</h3>
- </div>
-<a href="{{ URL::to('thread_show/'.$thread->id) }}">Read it...</a>
-</div>
-@endforeach
-</div>
+<br>
 {!! $topic_threads->links() !!}
 </div>
+@endif
 @else
 <p>No any data available now here</p>
 @endif

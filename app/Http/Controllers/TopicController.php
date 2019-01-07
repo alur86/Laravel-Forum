@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Thread;
 use App\Topic;
 
-use App\Http\Requests\SearchFormRequest;
+use App\Http\Requests\SearchRequest;
 
 
 
@@ -43,11 +43,11 @@ return view('topics.show')->with('topic',$topic)->with('topic_threads',$topic_th
 
 
 
-public function search(SearchFormRequest $request) {
+public function search(SearchRequest $request) {
 
 $query = $request->get('query');
 
-$topic_id = int($request->get('topic_id'));
+$topic_id = intval($request->get('topic_id'));
 
 $topic = Topic::findOrFail($topic_id);
 

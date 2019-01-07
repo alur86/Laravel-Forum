@@ -24,4 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'ProfileController@index')->name('profile');
 Route::get('/update', 'ProfileController@update')->name('update');
 Route::post('/updateprofile','ProfileController@updateProfile')->name('updateprofile');
-Route::get('/topic_show/{id}', 'TopicController@show')->('topic_show');
+Route::get('/topic_show/{id}', 'TopicController@show')->name('topic_show');
+Route::get('/topic_search', 'TopicController@search')->name('top_search');
+Route::get('/thread_show/{id}', 'ThreadController@show')->name('thread_show');
+Route::get('/mythreads', 'ThreadController@index')->name('mythreads');
