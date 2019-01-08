@@ -42,7 +42,7 @@ protected $fillable = [
    
    $limits = DB::table('threads')->Orderby('id', 'desc')->limit(5)->count();
   
-   if ($limits) >= LIMIT) {
+   if ($limits >= LIMIT) {
   
    return true;
 
@@ -61,7 +61,7 @@ public function RemoveLast($user_id) {
 
 $thrd = Thread::where('user_id','=',$user_id)->limit(5)->latest()->get();
 
-$thrd->delete();
+$thrd-> delete();
 
 
 }

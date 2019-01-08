@@ -1,7 +1,6 @@
 @extends('layouts.app')
+@section('content')
 
-@section('content')
-@section('content')
   <div class="container spark-screen">
   <div class="row">
   <div class="panel panel-default">
@@ -26,7 +25,7 @@
 <hr>
 
  <br><a href="{{ url('/update') }}">Update</a></br>    
- <br><a href="{{ url('/mythreads') }}">MyThreads</a></br> 
+ <br><a href="{{ url('/mythreads/. $thread->id) }}">MyThreads</a></br> 
 
 
 @endsection

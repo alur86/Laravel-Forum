@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Thread;
+use App\Topic;
+use App\Reply;
 use Illuminate\Http\Request;
 use Auth;
 use App\User;
-
+use App\Http\Requests\ThreadRequest;
 
 
 class ThreadController extends Controller
@@ -22,19 +24,14 @@ class ThreadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
        
       $user = Auth::user();
-
       $uid = $user->id;
-
       $uname =$user->name;
    
       $title  ="Personal Profile: My Threads ";
-   
       $threads = Thread::where('user_id', '=',  $uid)->paginate(3);
-
       $count_results = Thread::orderBy('created_at')->get()->count();
   
       return view('profile.mythreads')->with('threads',$threads)->with('count_results',$count_results)->with('title',$title)->with('uname', $uname);
@@ -49,9 +46,17 @@ class ThreadController extends Controller
      */
     public function create()
     {
-        $topic = Topic::where('user_id', '=',$user_id)->first();
+         if (!Auth::check()) {
+            return $this->response->errorNotFound('You need to be logged in!');
+        }
 
-        return view('profile.createthread',compact('topic'));
+      $user = Auth::user();
+      $uid = $user->id;
+      $uname =$user->name;
+      $title  ="Personal Profile: Add New Thread";
+      $topics = Topic::orderBy('created_at')->get();
+
+        return view('profile.createthread',compact('topics', 'title','uname'));
     }
 
     /**
@@ -60,25 +65,17 @@ class ThreadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-     public function store(Request $request, $id)
-    {
+     public function store(ThreadRequest $request) {
         
-            $thread = Thread::find((int)$id);
-
-            if (!$thread) {
-                return $this->response->errorNotFound('Thread not found');
-            }
-
-        } else {
-            $thread = new Thread();
-        }
-
+        $thread = new Thread();
         $thread->title      = $request->title;
         $thread->content    = $request->content;
-        $thread->user_id    = Auth::user()->id;
+        $thread->user_id    =  $request->user_id;
         $thread->topic_id   = $request->topic_id;
         $thread->created_at   = date("Y-m-d H:i:s");
         $thread->save();
+    
+        return redirect('/mythreads');
      
     }
     /**
@@ -89,13 +86,19 @@ class ThreadController extends Controller
      */
     public function show(Thread $thread)
     {
+        if (!Auth::check()) {
+            return $this->response->errorNotFound('You need to be logged in!');
+        }
+
+        $title = "Personal Profile: Thread Details";
+
         $user_id = Auth::user()->id;
 
-        $topic = Topic::where('user_id', '=',$user_id)->first();
+        $topics = Topic::orderBy('created_at')->get();
 
-        $thread = Thread::where('id', $thread->id);
+        $thread = Thread::where('id', '=', $thread->id)->first();
 
-        return view('profile.showthreads', compact('thread','topic'));
+        return view('profile.showthread', compact('thread','topic','title'));
     }
 
     /**
@@ -106,9 +109,19 @@ class ThreadController extends Controller
      */
     public function edit(Thread $thread)
     {
-        $thread = Thread::where('id', $thread->id);
+        if (!Auth::check()) {
+            return $this->response->errorNotFound('You need to be logged in!');
+        }
 
-        return view('profile.editthreads', compact('thread'));
+        $title = "Personal Profile: Edit Thread ";
+
+        $user_id = Auth::user()->id;
+
+        $topics = Topic::orderBy('created_at')->get();
+
+        $thread = Thread::where('id', $thread->id)->first();
+
+        return view('profile.editthread', compact('thread','topics','title'));
     }
 
     /**
@@ -118,10 +131,30 @@ class ThreadController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Thread $thread)
+    public function update(ThreadRequest $request)
     {
-        //
-    }
+       if (!Auth::check()) {
+            return $this->response->errorNotFound('You need to be logged in!');
+        }
+
+        $uid=(int)$request->get('user_id');
+        $thread_id=(int)$request->get('thread_id');
+        $topic_id = (int)$request->get('topic_id');
+
+        $thread = Thread::where('id', '=',$thread_id)->first();
+
+        $thread->title      = $request->title;
+        $thread->content    = $request->content;
+        $thread->user_id    = $uid;
+        $thread->topic_id   = $topic_id;
+        $thread->updated_at   = date("Y-m-d H:i:s");
+        $thread->save();
+
+ 
+        return redirect('/mythreads');
+
+
+}
 
     /**
      * Remove the specified resource from storage.
@@ -129,21 +162,21 @@ class ThreadController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-   public function destroy(Request $request, $id)
+   public function destroy($id)
     {
         $id = (int)$id;
         if (Auth::check()) {
-            $thread = Thread::where('id', $id)->first();
-            $user_id = Auth::user()->id;
-            if ($thread->user_id === $user_id) {
-                $thread->delete();
+            $thread = Thread::where('id','=', $thread->id)->first();
+             $thread->delete();
+               return redirect('/mythreads');
             } else {
                 return back()->with(['message' => 'You can\'t delete this thread']);
             }
-        } else {
-            return redirect('/login')->with([ 'message' => 'You need to be logged in in order to delete a thread.' ]);
-        }
+        
+        
     }
+
+
 }
 
 

@@ -15,16 +15,25 @@
  //  return view('welcome');
 //});
 
-Route::get('/', 'TopicController@index')->name('topic');
+
 
 
 Auth::routes();
 Route::pattern('id', '[0-9]+');
+
+Route::get('/', 'TopicController@index')->name('topic');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'ProfileController@index')->name('profile');
 Route::get('/update', 'ProfileController@update')->name('update');
 Route::post('/updateprofile','ProfileController@updateProfile')->name('updateprofile');
 Route::get('/topic_show/{id}', 'TopicController@show')->name('topic_show');
 Route::get('/topic_search', 'TopicController@search')->name('top_search');
-Route::get('/thread_show/{id}', 'ThreadController@show')->name('thread_show');
+Route::get('/mythread_show/{thread}', 'ThreadController@show')->name('thread_show');
 Route::get('/mythreads', 'ThreadController@index')->name('mythreads');
+Route::get('/addthread', 'ThreadController@create')->name('addthread');
+Route::post('/newthread', 'ThreadController@store')->name('newthread');
+Route::get('/edit_mythread/{thread}', 'ThreadController@edit')->name('edit_mythread');
+Route::post('/updthread', 'ThreadController@update')->name('updthread');
+Route::delete('/delete_mythread/{id}', 'ThreadController@destroy')->name('delete_mythread');
+
+
