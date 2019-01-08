@@ -21,7 +21,7 @@
 <h5>{{$thread->title}}</h5>
  </div>
  <h3>Thread Content:</h3>
- <h5>{{$thread->content}}</h5>
+ {{ str_limit($thread->content, $limit = 75, $end = '...') }}
  </div>
  <hr>
 

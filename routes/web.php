@@ -43,3 +43,9 @@ Route::delete('/delete_mythread/{id}', 'ThreadController@destroy')->name('delete
 Route::get('/newreply/{id}', 'ReplyController@newreply')->name('newreply');
 Route::post('/createreply', 'ReplyController@create')->name('createreply');
 Route::get('/thanks', 'ThanksController@index');
+
+
+Route::group(['prefix' => 'admin', 'namespace' => 'admin'], function()
+{
+Route::resource('admin', 'AdminController');
+});
