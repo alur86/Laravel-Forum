@@ -19,7 +19,13 @@
      @endforeach
     </select>  
  </div>
-
+@if ($errors->has('topic_id'))
+<span class="help-block">
+<strong>{{ $errors->first('topic_id') }}</strong>
+</span>
+ @endif
+ </div> 
+ </div>
  
  <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
 <label for="title" class="col-md-4 control-label">Title</label>

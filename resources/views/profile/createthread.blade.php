@@ -12,11 +12,17 @@
 
 <div class="form-group{{ $errors->has('topic_id') ? ' has-error' : '' }}">
 <select name="topic_id">
-     <option selected disabled>Please select one option</option>
-     @foreach($topics as $topic)
-     <option value="{{ $topic->id }}">{{ $topic->title }}</option>
-     @endforeach
-    </select>  
+<option selected disabled>Please select one option</option>
+@foreach($topics as $topic)
+<option value="{{ $topic->id }}">{{ $topic->title }}</option>
+@endforeach
+</select> 
+@if ($errors->has('topic_id'))
+<span class="help-block">
+<strong>{{ $errors->first('topic_id') }}</strong>
+</span>
+ @endif
+ </div> 
  </div>
 
  
@@ -36,7 +42,7 @@
  <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
  <label for="content" class="col-md-4 control-label">Content</label>
  <div class="col-md-6">
- <textarea id="comment" class="form-control" cols="50" rows="10" name="content">
+ <textarea id="content" class="form-control" cols="50" rows="10" name="content">
  </textarea>
  @if ($errors->has('content'))
 <span class="help-block">

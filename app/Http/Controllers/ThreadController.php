@@ -128,7 +128,6 @@ class ThreadController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
     public function update(ThreadRequest $request)
@@ -159,7 +158,6 @@ class ThreadController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
    public function destroy($id)
@@ -170,7 +168,7 @@ class ThreadController extends Controller
              $thread->delete();
                return redirect('/mythreads');
             } else {
-                return back()->with(['message' => 'You can\'t delete this thread']);
+                return back()->with(['message' => 'You can not delete this thread']);
             }
         
         
