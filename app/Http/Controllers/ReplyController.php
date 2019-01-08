@@ -50,18 +50,48 @@ public function  newreply ($id){
 
 public function create(ReplyRequest $request) {
 
+$thread_id = (int)$request->get('thread_id');
+
+
+$thread = Thread::where('id', '=', $thread_id)->first();
+
+$uid=$thread->user_id;
+
+$user = User::where('id', '=', $uid)->first();
+
+$uemail =$user->email;
+
+$uname = $user->name;
+
 $data = [
 'body'=>$request->get('body'),
 'name'=>$request->get('name'),
 'email'=>$request->get('email'),
 ];
 
+$udata = [
+'body'=>$request->get('body'),
+'name'=>$uname,
+'email'=>$uemail,
+];
+
+
 $rpl = new Reply;
-$rpl->thread_id = (int)$request->get('thread_id');
+$rpl->thread_id = $thread_id;
 $rpl->user_id = (int)$request->get('user_id');
 $rpl->body = $request->get('body');
 $rpl->ip = $request->ip();
 $rpl->save();
+
+
+
+\Mail::send('emails.ccreply', $udata, function($message)
+{
+
+$message->from(env('MAIL_FROM'));
+$message->to(env('MAIL_FROM'), env('MAIL_NAME'));
+$message->subject('Reply on thread');
+});
 
 
 
@@ -72,6 +102,8 @@ $message->from(env('MAIL_FROM'));
 $message->to(env('MAIL_FROM'), env('MAIL_NAME'));
 $message->subject('Reply on thread');
 });
+
+
 
 
 return redirect('/thanks');
