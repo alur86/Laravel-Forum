@@ -27,7 +27,7 @@ public function index() {
 
     $threads = Thread::getAllLatest()->get();
 
-    return view('replies.index', compact('threads', 'currentUserId'));
+    return view('replies.index', compact('threads'));
 
 
 }
@@ -35,16 +35,17 @@ public function index() {
 
 public function  newreply ($id){
 
+
+  if (!Auth::check()) {
+            return $this->response->errorNotFound('You need to be logged in!');
+        }
+
+ $title = "New Reply";
  $thread = Thread::find($id);
 
- return view('replies.create', compact('thread'));
-
+ return view('replies.createreply', compact('thread','title'));
 
 }
-
-
-
-
 
 
 public function create(ReplyRequest $request) {
@@ -73,7 +74,7 @@ $message->subject('Reply on thread');
 });
 
 
-return redirect('/replysthanks');
+return redirect('/thanks');
 
 
 }

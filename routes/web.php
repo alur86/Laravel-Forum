@@ -15,19 +15,22 @@
  //  return view('welcome');
 //});
 
-
-
-
 Auth::routes();
 Route::pattern('id', '[0-9]+');
 
+
+/// profile routes
 Route::get('/', 'TopicController@index')->name('topic');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'ProfileController@index')->name('profile');
 Route::get('/update', 'ProfileController@update')->name('update');
 Route::post('/updateprofile','ProfileController@updateProfile')->name('updateprofile');
+
+///topic routes
 Route::get('/topic_show/{id}', 'TopicController@show')->name('topic_show');
 Route::get('/topic_search', 'TopicController@search')->name('top_search');
+
+/// thread routes
 Route::get('/mythread_show/{thread}', 'ThreadController@show')->name('thread_show');
 Route::get('/mythreads', 'ThreadController@index')->name('mythreads');
 Route::get('/addthread', 'ThreadController@create')->name('addthread');
@@ -36,4 +39,7 @@ Route::get('/edit_mythread/{thread}', 'ThreadController@edit')->name('edit_mythr
 Route::post('/updthread', 'ThreadController@update')->name('updthread');
 Route::delete('/delete_mythread/{id}', 'ThreadController@destroy')->name('delete_mythread');
 
-
+/// reply routes
+Route::get('/newreply/{id}', 'ReplyController@newreply')->name('newreply');
+Route::post('/createreply', 'ReplyController@create')->name('createreply');
+Route::get('/thanks', 'ThanksController@index');

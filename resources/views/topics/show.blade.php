@@ -26,7 +26,7 @@
  <div class="col-md-6">
 <h3>Thread Title:{{$thread->title}}</h3>
  </div>
-<a href="{{ URL::to('thread_show/'.$thread->id) }}">Read it...</a>
+<a href="{{ URL::to('/mythread_show/'.$thread->id) }}">Read it...</a>
 </div>
 @endforeach
 </div>
@@ -55,7 +55,7 @@
 </div>
 @endif
 @else
-<p>No any data available now here</p>
+<p>No any threads available now here</p>
 @endif
 </div>
 </div>

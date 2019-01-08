@@ -98,8 +98,22 @@ class ThreadController extends Controller
 
         $thread = Thread::where('id', '=', $thread->id)->first();
 
-        return view('profile.showthread', compact('thread','topic','title'));
-    }
+        $replycount = Reply::where( 'thread_id', '=',  $thread->id)->get()->count();
+
+        if ($replycount == 0) {
+
+        return view('profile.showthread', compact('thread','topics','title'));
+
+        }
+
+          else {
+
+    $replies = Reply::where( 'thread_id', '=',  $thread->id)->get();
+
+   return view('profile.showthreadreply', compact('thread','topics','title','replycount','replies'));
+     }
+
+}
 
     /**
      * Show the form for editing the specified resource.
