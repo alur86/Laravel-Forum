@@ -7,6 +7,7 @@ use App\Topic;
 use App\Reply;
 use Illuminate\Http\Request;
 use Auth;
+use App\Filters\ThreadFilters;
 use App\User;
 use App\Http\Requests\ThreadRequest;
 
@@ -199,7 +200,7 @@ class ThreadController extends Controller
                return redirect('/mythreads');
 
             } else {
-                
+
                 return back()->with(['message' => 'You can not delete this thread']);
             }
         

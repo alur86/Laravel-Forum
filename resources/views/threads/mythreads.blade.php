@@ -14,6 +14,9 @@
  <div class="col-md-6">
 <h3>{{$thread->title}}</h3>
  </div>
+ <h5><br><a href="mythreads/?by={{Auth::user()->name}}">Sort By Username</a></h5>
+  <h5><br><a href="mythreads/?=newest()">Sort By Date</a></h5>
+   <h5><br><a href="mythreads/?=abc()">Sort By ABC</a></h5>
 <br><a href="{{ URL::to('mythread_show/'.$thread->id) }}">View Thread</a><br>
 <br><a href="{{ URL::to('/edit_mythread/'.$thread->id) }}">Edit Thread</a></br>
 <form method="DELETE" action="{{ URL::to('/delete_mythread/'.$thread->id) }}" class="form-control-lg">
