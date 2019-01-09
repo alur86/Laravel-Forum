@@ -14,7 +14,6 @@ protected $fillable = [
       'title','content' 
   ];
 
- const LIMIT = 5;
 
  public $timestamps = true;	
     
@@ -38,30 +37,12 @@ protected $fillable = [
         return $this->hasMany(Reply::class);
     }
 
- public function CheckLimit() {
-   
-   $limits = DB::table('threads')->Orderby('id', 'desc')->limit(5)->count();
-  
-   if ($limits >= LIMIT) {
-  
-   return true;
-
-   }
-
-   else {
-
-   return false ;
-
-   }
-
- }
 
 
-public function RemoveLast($user_id) {
 
-$thrd = Thread::where('user_id','=',$user_id)->limit(5)->latest()->get();
+public static function RemoveLast($user_id) {
 
-$thrd-> delete();
+$thrd = Thread::where('user_id','=',$user_id)->orderBy('updated_at','desc')->limit(5)->first()->delete();
 
 
 }

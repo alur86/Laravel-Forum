@@ -25,7 +25,7 @@
 <hr>
 
  <br><a href="{{ url('/update') }}">Update</a></br>    
- <br><a href="{{ url('/mythreads/. $thread->id) }}">MyThreads</a></br> 
+ <br><a href="{{ url('/mythreads/') }}">MyThreads</a></br> 
 
 
 @endsection

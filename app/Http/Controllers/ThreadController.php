@@ -29,13 +29,25 @@ class ThreadController extends Controller
       $user = Auth::user();
       $uid = $user->id;
       $uname =$user->name;
+      $count_results = Thread::orderBy('id')->get()->count(); 
+
+      if ($count_results == 5) {
+
+       Thread::RemoveLast($uid);
+     
+  return view('threads.nulledmythreads')->with('title',$title)->with('uname', $uname);
+       
+
+     }
+    
+     else {
    
       $title  ="Personal Profile: My Threads ";
       $threads = Thread::where('user_id', '=',  $uid)->paginate(3);
-      $count_results = Thread::orderBy('created_at')->get()->count();
+    
   
-      return view('profile.mythreads')->with('threads',$threads)->with('count_results',$count_results)->with('title',$title)->with('uname', $uname);
-
+      return view('threads.mythreads')->with('threads',$threads)->with('count_results',$count_results)->with('title',$title)->with('uname', $uname);
+       }
 
     }
 
@@ -56,7 +68,7 @@ class ThreadController extends Controller
       $title  ="Personal Profile: Add New Thread";
       $topics = Topic::orderBy('created_at')->get();
 
-        return view('profile.createthread',compact('topics', 'title','uname'));
+        return view('threads.createthread',compact('topics', 'title','uname'));
     }
 
     /**
@@ -102,7 +114,7 @@ class ThreadController extends Controller
 
         if ($replycount == 0) {
 
-        return view('profile.showthread', compact('thread','topics','title'));
+        return view('threads.showthread', compact('thread','topics','title'));
 
         }
 
@@ -110,7 +122,7 @@ class ThreadController extends Controller
 
     $replies = Reply::where( 'thread_id', '=',  $thread->id)->get();
 
-   return view('profile.showthreadreply', compact('thread','topics','title','replycount','replies'));
+   return view('threads.showthreadreply', compact('thread','topics','title','replycount','replies'));
      }
 
 }
@@ -135,7 +147,7 @@ class ThreadController extends Controller
 
         $thread = Thread::where('id', $thread->id)->first();
 
-        return view('profile.editthread', compact('thread','topics','title'));
+        return view('threads.editthread', compact('thread','topics','title'));
     }
 
     /**
@@ -176,12 +188,18 @@ class ThreadController extends Controller
      */
    public function destroy($id)
     {
-        $id = (int)$id;
+         $id = (int)$id;
+
         if (Auth::check()) {
+
             $thread = Thread::where('id','=', $thread->id)->first();
+
              $thread->delete();
+
                return redirect('/mythreads');
+
             } else {
+                
                 return back()->with(['message' => 'You can not delete this thread']);
             }
         

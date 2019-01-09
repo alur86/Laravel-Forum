@@ -11,6 +11,7 @@
   {{ csrf_field() }}
 
 <div class="form-group{{ $errors->has('topic_id') ? ' has-error' : '' }}">
+<div class="col-md-6">
 <select name="topic_id">
 <option selected disabled>Please select one option</option>
 @foreach($topics as $topic)
